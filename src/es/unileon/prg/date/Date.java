@@ -8,14 +8,21 @@ public class Date {
 
 	public Date(int day, int month, int year) throws DateException{
 		this.year = year;
+
 		if (month < 1 || month > 12) {
 			throw new DateException("Mes " + month + " no valido" +
 					" Valores posibles entre 1 y 12.");
 		} else {
 			this.month = month;
 		}
+
 		//TODO falta comprobar el dia
-		this.day = day;
+		if (day < 1 || day > getDaysOfMonth(month, year)) {
+			throw new DateException("Dia " + day + " no valido" +
+					" Valores posibles entre 1 y " + getDaysOfMonth(month, year) + ".");
+		} else {
+			this.day = day;
+		}
 	}
 
 	public String toString() {
@@ -24,6 +31,15 @@ public class Date {
 
 	public int getYear() {
 		return this.year;
+	}
+
+	public void setMonth(int month) throws DateException {
+		if (month < 1 || month > 12) {
+			throw new DateException("Mes " + month + " no valido" +
+					" Valores posibles entre 1 y 12.");
+		} else {
+			this.month = month;
+		}
 	}
 
 	public int getMonth() {
@@ -213,6 +229,23 @@ public class Date {
 		}
 
 		return season;
+	}
+
+	public String getMonthsLeft() {
+		StringBuffer cadena = new StringBuffer();
+
+		try {
+			Date fechaAux = new Date(this.day, this.month, this.year);
+
+			for (int i = this.month; i < 12; i++) {
+				fechaAux.setMonth(i);
+				cadena.append(fechaAux.getNameOfTheMonth() + "\n");
+			}
+		} catch (DateException e) {
+			System.out.println(e.getMessage());
+		}
+
+		return cadena.toString();
 	}
 
 }
