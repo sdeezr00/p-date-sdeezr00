@@ -46,6 +46,15 @@ public class Date {
 		return this.month;
 	}
 
+	public void setDay(int day) throws DateException {
+		if (day < 1 || day > getDaysOfMonth(this.month, this.year)) {
+			throw new DateException("Dia " + day + " no valido" +
+					" Valores posibles entre 1 y " + getDaysOfMonth(month, year) + ".");
+		} else {
+			this.day = day;
+		}
+	}
+
 	public int getDay() {
 		return this.day;
 	}
@@ -240,6 +249,23 @@ public class Date {
 			for (int i = this.month; i < 12; i++) {
 				fechaAux.setMonth(i);
 				cadena.append(fechaAux.getNameOfTheMonth() + "\n");
+			}
+		} catch (DateException e) {
+			System.out.println(e.getMessage());
+		}
+
+		return cadena.toString();
+	}
+
+	public String getDatesLeftOfMonth() {
+		StringBuffer cadena = new StringBuffer();
+
+		try {
+			Date fechaAux = new Date(this.day, this.month, this.year);
+
+			for (int i = this.day; i < getDaysOfMonth(this.month, this.year); i++) {
+				fechaAux.setMonth(i);
+				cadena.append(fechaAux.toString() + "\n");
 			}
 		} catch (DateException e) {
 			System.out.println(e.getMessage());
