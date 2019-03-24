@@ -49,7 +49,7 @@ public class Date {
 	public void setDay(int day) throws DateException {
 		if (day < 1 || day > getDaysOfMonth(this.month, this.year)) {
 			throw new DateException("Dia " + day + " no valido" +
-					" Valores posibles entre 1 y " + getDaysOfMonth(month, year) + ".");
+					" Valores posibles entre 1 y " + getDaysOfMonth(this.month, this.year) + ".");
 		} else {
 			this.day = day;
 		}
@@ -264,7 +264,7 @@ public class Date {
 			Date fechaAux = new Date(this.day, this.month, this.year);
 
 			for (int i = this.day; i < getDaysOfMonth(this.month, this.year); i++) {
-				fechaAux.setMonth(i);
+				fechaAux.setDay(i);
 				cadena.append(fechaAux.toString() + "\n");
 			}
 		} catch (DateException e) {
@@ -272,6 +272,91 @@ public class Date {
 		}
 
 		return cadena.toString();
+	}
+
+	public String getMonthsSameDays() {
+		StringBuffer cadena = new StringBuffer();
+
+		try {
+			Date fechaAux = new Date(this.day, this.month, this.year);
+
+			for (int i = 1; i <= 12; i++) {
+				fechaAux.setMonth(i);
+
+				if (getDaysOfMonth(i, this.year) == getDaysOfMonth(this.month, this.year)) {
+					cadena.append(fechaAux.getNameOfTheMonth() + "\n");
+				}
+			}
+		} catch (DateException e) {
+			System.out.println(e.getMessage());
+		}
+
+		return cadena.toString();
+	}
+
+	public int getDaysPast() {
+		int daysPast = 0;
+
+		for (int i = 1; i < this.month; i++) {
+
+			for (int j = 1; j < getDaysOfMonth(i, this.year); j++) {
+				daysPast++;
+			}
+				
+		}
+
+		daysPast = daysPast + this.day - 1;
+
+		return daysPast;
+	}
+
+	public int getNumberOfAttemps() {
+		int attemps = 0;
+		int day = 0;
+		int month = 0;
+
+		do {
+			month = (int) (Math.random() * 12) + 1;
+			day = (int) (Math.random() * getDaysOfMonth(month, this.year) ) + 1;
+
+			attemps++;
+		} while (day != this.day && month != this.month);
+
+		return attemps;
+	}
+
+	public String getDayOfTheWeek(int firstDay) {
+		int day = 0;
+		String nameOfDay = null;
+		
+		day = (getDaysPast() % 7 + firstDay) % 7;
+
+		switch (day) {
+			case 1:
+				nameOfDay = "Monday";
+				break;
+			case 2:
+				nameOfDay = "Tuesday";
+				break;
+			case 3:
+				nameOfDay = "Wednesday";
+				break;
+			case 4:
+				nameOfDay = "Thursday";
+				break;
+			case 5:
+				nameOfDay = "Friday";
+				break;
+			case 6:
+				nameOfDay = "Saturday";
+				break;
+			case 7:
+				nameOfDay = "Sunday";
+				break;
+			default:
+		}
+
+		return nameOfDay;
 	}
 
 }
